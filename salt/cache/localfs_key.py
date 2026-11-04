@@ -401,9 +401,9 @@ def list_all(bank, cachedir, include_data=False, **kwargs):
                             continue
                         if entry.name.startswith("."):
                             continue
-                        if not valid_id(__opts__, entry.name):
+                        if any(c in entry.name for c in ("/", "\\", "\0")):
                             continue
-                        if not clean_path(cachedir, entry.path, subdir=True):
+                        if not clean_path(cachedir, entry.path, subdir=True, realpath=False):
                             continue
 
                         if include_data:
@@ -432,9 +432,9 @@ def list_all(bank, cachedir, include_data=False, **kwargs):
                     for entry in it:
                         if not entry.is_file() or entry.is_symlink():
                             continue
-                        if not valid_id(__opts__, entry.name):
+                        if any(c in entry.name for c in ("/", "\\", "\0")):
                             continue
-                        if not clean_path(cachedir, entry.path, subdir=True):
+                        if not clean_path(cachedir, entry.path, subdir=True, realpath=False):
                             continue
 
                         try:
